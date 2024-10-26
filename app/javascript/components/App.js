@@ -1,10 +1,10 @@
-import React from 'react';
-import ThreeScene from './ThreeScene';
+import React from "react";
+import ThreeModel from "./ThreeModel";
 
 function App() {
   return (
-    <div className="App">
-      <ThreeScene />
+    <div>
+      <ThreeModel />
     </div>
   );
 }
