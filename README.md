@@ -1,2 +1,2 @@
-<h1>Tech Schope</h1>
+<h1>Tech Scope</h1>
 <p>Tech Scope is a blog platform dedicated to exploring the latest trends, news, and innovations in technology. It delves into the ethical implications of tech advancements, offering insights into how technology intersects with politics and the legal landscape. Through thoughtful analysis and timely updates, Tech Scope fosters a deeper understanding of the tech world and its broader societal impacts.</p>
