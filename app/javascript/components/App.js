@@ -1,17 +1,13 @@
-import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Blogs from "./Blogs";
+import React from 'react';
+import ThreeScene from './ThreeScene';
 
-
-const App = (props) => {
-
+function App() {
   return (
-    <BrowserRouter>
-    <Switch>
-      <Route exact path="/blogs" component={Blogs} />
-    </Switch>
-    </BrowserRouter>
-  )
+    <div className="App">
+      <h1>Welcome to TechScope!</h1>
+      <ThreeScene />
+    </div>
+  );
 }
 
 export default App;
