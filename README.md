@@ -1,24 +1,2 @@
-# README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+<h1>Tech Schope</h1>
+<p>Tech Scope is a blog platform dedicated to exploring the latest trends, news, and innovations in technology. It delves into the ethical implications of tech advancements, offering insights into how technology intersects with politics and the legal landscape. Through thoughtful analysis and timely updates, Tech Scope fosters a deeper understanding of the tech world and its broader societal impacts.</p>
