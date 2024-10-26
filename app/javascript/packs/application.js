@@ -1,21 +1,12 @@
-import React from "react";
-import { createRoot } from 'react-dom/client';
-import App from "./App";
-import RedBox from 'redbox-react';
+// app/javascript/packs/application.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from '../components/App'; // Your main React component
 
 document.addEventListener('DOMContentLoaded', () => {
-  let reactElement = document.getElementById('app')
-
-  if (reactElement) {
-    const root = createRoot(reactElement);
-    if (window.railsEnv && window.railsEnv === 'development') {
-      try {
-        root.render(<App />);
-      } catch (e) {
-        root.render(<RedBox error={e} />);
-      }
-    } else {
-      root.render(<App />);
-    }
-  }
+  ReactDOM.render(
+    <App />, 
+    document.getElementById('root')
+  );
 });
+

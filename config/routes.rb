@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
-  root "homepage#index"
+  get "react/index"
+  root "react#index"
   devise_for :users
 
-  get "/blogs", to: "static_pages#index"
+  get "/*path", to: 'react#index'
 
 
 
