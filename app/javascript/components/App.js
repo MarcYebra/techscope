@@ -1,12 +1,15 @@
 import React from "react";
-import ThreeModel from "./ThreeModel";
-
-
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import LandingPage from "./LandingPage";
 
 function App() {
   return (
     <div>
-      <ThreeModel />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

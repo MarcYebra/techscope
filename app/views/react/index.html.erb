@@ -3,29 +3,10 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechScope</title>
+    <title>Tech Scope</title>
     <%= javascript_pack_tag 'application' %>
-
-    <style>
-      body {
-        margin: 0;
-        background-color: #000;
-        overflow: hidden;
-      }
-    </style>
-
-    <!-- Google Fonts (Orbitron) -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-  </head>
-
-
-
-
-
+    <%= stylesheet_link_tag 'main', media: 'all' %>
   <body>
-
-  <%= yield %>
-
-    <div id="root"></div>
+  <div id="root"></div>
   </body>
 </html>
