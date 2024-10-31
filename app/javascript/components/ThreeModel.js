@@ -1,7 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { useHistory } from 'react-router-dom';
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 const ThreeModel = () => {
   const mountRef = useRef(null);
@@ -9,123 +7,123 @@ const ThreeModel = () => {
   useEffect(() => {
     const scene = new THREE.Scene();
 
+    const skyboxGeometry = new THREE.SphereGeometry(500, 60, 40);
+    const skyboxMaterial = new THREE.MeshBasicMaterial({
+      color: 0x001419, // Dark futuristic background
+      side: THREE.BackSide,  // Render inside the sphere
+    });
+    const skybox = new THREE.Mesh(skyboxGeometry, skyboxMaterial);
+    scene.add(skybox);
+
     const camera = new THREE.PerspectiveCamera(
       75,
       window.innerWidth / window.innerHeight,
       0.1,
       1000
     );
-    camera.position.z = 5;
+    camera.position.z = 8;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x0a0a1f); // Dark background color
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;  
+    renderer.toneMappingExposure = 1.5;
     mountRef.current.appendChild(renderer.domElement);
 
-    // OrbitControls for user interaction
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.minDistance = 3;
-    controls.maxDistance = 7;
-    controls.enableZoom = true; // Disable zoom functionality
-
-    // Add a transparent sphere with a blue outline
-    const geometry = new THREE.SphereGeometry(2, 64, 64);
-
-    // Material with wireframe for the thin blue outline
-    const material = new THREE.MeshBasicMaterial({
-      color: 0x0077ff, // Blue color for the outline
-      wireframe: true, // Only display the wireframe (outline)
-      transparent: true, // Make it transparent
-      opacity: 0.3, // Subtle opacity for the sphere interior
+    // Create a glowing, reflective sphere with a grid pattern
+    const sphereGeometry = new THREE.SphereGeometry(4, 64, 64);
+    const wireframeMaterial = new THREE.MeshBasicMaterial({
+      color: 0x00248f, 
+      emissive: 0x005980,
+      roughness: .5,
+      metalness: 1.0,
+      wireframe: true, // Grid-like wireframe
     });
-
-    // Create the sphere mesh
-    const sphere = new THREE.Mesh(geometry, material);
+    const sphere = new THREE.Mesh(sphereGeometry, wireframeMaterial);
     scene.add(sphere);
 
-    // Add ambient light to soften the scene
-    const ambientLight = new THREE.AmbientLight(0x222222);
+    // Glow around the sphere
+    const pointLight = new THREE.PointLight(0x00ffff, 3, 50);
+    pointLight.position.set(0, 0, 10); // Positioned in front for glowing effect
+    scene.add(pointLight);
+
+    // Subtle ambient light for depth
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
     scene.add(ambientLight);
 
-    // Create stars in the background
+    // Stars setup
+    const starVertices = [];
     function createStars() {
       const starGeometry = new THREE.BufferGeometry();
       const starMaterial = new THREE.PointsMaterial({
-        color: 0xffffff, // Star color
+        color: 0x888888, 
+        size: 1.3,
       });
 
-      const starVertices = [];
       for (let i = 0; i < 10000; i++) {
-        const x = THREE.MathUtils.randFloatSpread(1000);
-        const y = THREE.MathUtils.randFloatSpread(1000);
-        const z = THREE.MathUtils.randFloatSpread(1000);
+        const x = (Math.random() - 0.5) * 2000;
+        const y = (Math.random() - 0.5) * 2000;
+        const z = (Math.random() - 0.5) * 2000;
         starVertices.push(x, y, z);
       }
 
-      starGeometry.setAttribute(
-        'position',
-        new THREE.Float32BufferAttribute(starVertices, 3)
-      );
-
+      starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
       const stars = new THREE.Points(starGeometry, starMaterial);
       scene.add(stars);
     }
 
-    // Call the function to create stars
     createStars();
 
-    // Ensure responsiveness: Update renderer size and camera aspect on resize
-    const handleResize = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      renderer.setSize(width, height); // Resize the renderer to match the window size
-      camera.aspect = width / height; // Update the camera aspect ratio
-      camera.updateProjectionMatrix(); // Apply the changes
+    // Mouse move event listener
+    let mouseX = 0;
+    let mouseY = 0;
+    const handleMouseMove = (event) => {
+      mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+      mouseY = (event.clientY / window.innerHeight) * 2 - 1;
     };
+    window.addEventListener("mousemove", handleMouseMove);
 
+    const handleResize = () => {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+    };
     window.addEventListener("resize", handleResize);
 
     // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
-
-      // Slowly rotate the sphere on its axis
-      sphere.rotation.y += 0.003;
-
-      // Render the scene
+      sphere.rotation.y += 0.002;
+      camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
+      camera.position.y += (-mouseY * 2 - camera.position.y) * 0.05;
+      camera.lookAt(scene.position);
       renderer.render(scene, camera);
     };
 
     animate();
 
-    // Cleanup function when the component unmounts
     return () => {
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("mousemove", handleMouseMove);
       mountRef.current.removeChild(renderer.domElement);
       renderer.dispose();
-      geometry.dispose();
-      material.dispose();
+      sphereGeometry.dispose();
+      wireframeMaterial.dispose();
     };
   }, []);
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100vh" }}>
       <div ref={mountRef} style={{ width: "100%", height: "100vh" }} />
-      {/* Text overlay */}
-      <div
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          color: "white",
-          fontFamily: 'Orbitron',
-          fontSize: "4rem",
-          fontWeight: "bold",
-          pointerEvents: "none",
-        }}
-      >
-        Tech Scope
+      <div className="landing-letters">
+        <h1>TECH SCOPE</h1>
+        <h2>YOUR SOURCE FOR TECHNOLOGY INSIGHTS AND NEWS</h2>
+      </div>
+      <div className="landing-cat">
+        <span>ETHICS</span>
+        <span>SOCIETY</span>
+        <span>POLITICS</span>
+        <span>GLOBAL</span>
+        <span>INNOVATION</span>
       </div>
     </div>
   );
