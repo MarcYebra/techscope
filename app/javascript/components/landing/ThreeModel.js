@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from "react";
+import {Link} from 'react-router-dom'
 import * as THREE from "three";
+import Home from "../Home";
 
 const ThreeModel = () => {
   const mountRef = useRef(null);
@@ -117,6 +119,7 @@ const ThreeModel = () => {
       <div className="landing-letters">
         <h1>TECH SCOPE</h1>
         <h2>YOUR SOURCE FOR TECHNOLOGY INSIGHTS AND NEWS</h2>
+        <Link to="/home" className="explore-button">Explore Now</Link>
       </div>
       <div className="landing-cat">
         <span>ETHICS</span>

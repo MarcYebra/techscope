@@ -1,5 +1,6 @@
 import React from 'react';
-import Footer from './Footer.js'
+import {Link} from 'react-router-dom';
+import Footer from './Footer.js';
 
 const Home = (props) => {
   
@@ -10,11 +11,20 @@ const Home = (props) => {
         <h1 className='home-title'>Tech Scope</h1>
         <div className='div-white-line'></div>
           <ul className='home-cat'>
-            <li>Ethics</li>
-            <li>Society</li>
-            <li>Politics</li>
-            <li>Global</li>
-            <li>Innovation</li>
+            <li>
+              <Link to='/ethics'>Ethics</Link>
+            </li>
+            <li>
+              <Link to='/society'>Society</Link>
+            </li>
+            <li>
+              <Link to='/politics'>Politics</Link>
+            </li>
+            <li>
+              <Link to='/global'>Global</Link></li>
+            <li>
+              <Link to='/innovation'>Innovation</Link>
+            </li>
           </ul>
         <div className='div-white-line'></div>
       </div>
