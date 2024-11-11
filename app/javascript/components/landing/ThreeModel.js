@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 import * as THREE from "three";
-import Home from "../Home";
 
 const ThreeModel = () => {
   const mountRef = useRef(null);
@@ -11,53 +10,47 @@ const ThreeModel = () => {
 
     const skyboxGeometry = new THREE.SphereGeometry(500, 60, 40);
     const skyboxMaterial = new THREE.MeshBasicMaterial({
-      color: 0x001419, // Dark futuristic background
-      side: THREE.BackSide,  // Render inside the sphere
+      color: 0x001419,
+      side: THREE.BackSide,
     });
     const skybox = new THREE.Mesh(skyboxGeometry, skyboxMaterial);
     scene.add(skybox);
 
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 8;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;  
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.5;
-    mountRef.current.appendChild(renderer.domElement);
 
-    // Create a glowing, reflective sphere with a grid pattern
+    if (mountRef.current) {
+      mountRef.current.appendChild(renderer.domElement);
+    }
+
     const sphereGeometry = new THREE.SphereGeometry(4, 64, 64);
-    const wireframeMaterial = new THREE.MeshBasicMaterial({
-      color: 0x00248f, 
+    const wireframeMaterial = new THREE.MeshStandardMaterial({
+      color: 0x00071c,
       emissive: 0x005980,
-      roughness: .5,
+      roughness: 0.5,
       metalness: 1.0,
-      wireframe: true, // Grid-like wireframe
+      wireframe: true,
     });
     const sphere = new THREE.Mesh(sphereGeometry, wireframeMaterial);
     scene.add(sphere);
 
-    // Glow around the sphere
     const pointLight = new THREE.PointLight(0x00ffff, 3, 50);
-    pointLight.position.set(0, 0, 10); // Positioned in front for glowing effect
+    pointLight.position.set(0, 0, 10);
     scene.add(pointLight);
 
-    // Subtle ambient light for depth
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
     scene.add(ambientLight);
 
-    // Stars setup
     const starVertices = [];
     function createStars() {
       const starGeometry = new THREE.BufferGeometry();
       const starMaterial = new THREE.PointsMaterial({
-        color: 0x888888, 
+        color: 0x888888,
         size: 1.3,
       });
 
@@ -68,14 +61,13 @@ const ThreeModel = () => {
         starVertices.push(x, y, z);
       }
 
-      starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+      starGeometry.setAttribute("position", new THREE.Float32BufferAttribute(starVertices, 3));
       const stars = new THREE.Points(starGeometry, starMaterial);
       scene.add(stars);
     }
 
     createStars();
 
-    // Mouse move event listener
     let mouseX = 0;
     let mouseY = 0;
     const handleMouseMove = (event) => {
@@ -91,7 +83,6 @@ const ThreeModel = () => {
     };
     window.addEventListener("resize", handleResize);
 
-    // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
       sphere.rotation.y += 0.002;
@@ -106,10 +97,15 @@ const ThreeModel = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", handleMouseMove);
-      mountRef.current.removeChild(renderer.domElement);
+      
+      if (renderer.domElement && mountRef.current) {
+        mountRef.current.removeChild(renderer.domElement);
+      }
       renderer.dispose();
       sphereGeometry.dispose();
       wireframeMaterial.dispose();
+      skyboxGeometry.dispose();
+      skyboxMaterial.dispose();
     };
   }, []);
 
@@ -133,3 +129,4 @@ const ThreeModel = () => {
 };
 
 export default ThreeModel;
+
