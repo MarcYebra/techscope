@@ -1,3 +1,10 @@
+a:visited,
+a:link {
+  color: white;
+  text-decoration: none;
+}
+
+
 body {
   margin: 0;
   padding: 0;
@@ -39,6 +46,7 @@ body {
 
 .home-background {
   background-color: black;
+  border-bottom: 0.5px solid white;
 }
 
 .home-title {
@@ -49,8 +57,6 @@ body {
 }
 .home-cat {
   text-align: center;
-  border-bottom: 0.5px solid white;
-  padding-bottom: 19px;
 }
 .home-cat li{
   display: inline;
@@ -89,5 +95,6 @@ body {
   background-color: #001225;
   transform: scale(0.98);
 }
+
 
 

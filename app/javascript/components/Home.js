@@ -8,7 +8,9 @@ const Home = (props) => {
   return (
     <div>
       <div className='home-background'>
-        <h1 className='home-title'>Tech Scope</h1>
+        <h1 className='home-title'>
+          <a href='/'>Tech Scope</a>
+        </h1>
         <div className='div-white-line'></div>
           <ul className='home-cat'>
             <li>
