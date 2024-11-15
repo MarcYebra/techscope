@@ -9,7 +9,7 @@ const Home = (props) => {
     <div>
       <div className='home-background'>
         <h1 className='home-title'>
-          <a href='/'>Tech Scope</a>
+          <Link to='/'>Tech Scope</Link>
         </h1>
         <div className='div-white-line'></div>
           <ul className='home-cat'>
